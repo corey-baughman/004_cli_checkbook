@@ -7,6 +7,9 @@ import os
 # and storage as comma separated values in a .txt file
 import csv
 
+# import pandas to display dictionaries as DataFrames
+import pandas as pd
+
 
 ## FUNCTIONS CREATED FOR THIS APP:
 
@@ -24,7 +27,10 @@ def check_balance():
 # function to add a debit (withdrawal) from user input
 def add_debit():
     while True:
-        wd_amt = input("What is the amount of the withdrawal? \n")
+        wd_amt = input("What is the amount of the withdrawal? \n"
+        "(or type 'b' to go back to main menu) \n")
+        if wd_amt == 'b':
+            break
         wd_amt = float(wd_amt.strip('$').replace(',', ' ')) * (-1)
         if wd_amt >= 0:
             print('Withdrawal NOT entered.'
@@ -39,7 +45,10 @@ def add_debit():
 # function to add a credit (deposit) from user input
 def add_credit():
     while True:
-        dep_amt = input("What is the amount of the deposit? \n")
+        dep_amt = input("What is the amount of the deposit?\n"
+        "(or type 'b' to go back to main menu) \n")
+        if dep_amt == 'b':
+            break
         dep_amt = float(dep_amt.strip('$').replace(',', ' '))
         if dep_amt <= 0:
             print('Deposit NOT entered.\nPlease enter the amount as a positive number')
@@ -49,9 +58,18 @@ def add_credit():
                 td.writelines(f'credit,{dep_amt}\n')
             print(f'You entered a deposit of ${dep_amt:,.2f}\n')
             break
+            
+def show_all_trans():
+    with open('transaction_data.txt', 'r') as td:
+        trans_data = csv.DictReader(td)
+        trans_dict = []
+        for transaction in trans_data:
+            trans_dict.append(transaction)
+    ledger = pd.DataFrame.from_dict(trans_dict)
+    print(f'\n{ledger}\n')
                 
 def close_program():
-    print('Thanks, have a great day!')
+    print('\nThanks, have a great day!\n')
     exit()   
     
                 
@@ -86,10 +104,11 @@ while True:
           "1) View current balance\n"
           "2) Record a debit (withdrawal)\n"
           "3) Record a credit (deposit)\n"
-          "4) Exit\n")
+          "4) Show all transactions\n"
+          "5) Exit\n")
 
     # user chooses menu option
-    user_input = input('Your choice? \n')
+    user_input = input('Your choice? ')
 
     # user wants to view account balance
     if user_input.startswith('1'):
@@ -103,10 +122,13 @@ while True:
     elif user_input.startswith('3'):
         add_credit()
                 
-    # user wants to exit the program
+    # user wants to see all transactions
     elif user_input.startswith('4'):
+        show_all_trans()
+            
+    # user wants to exit the program
+    elif user_input.startswith('5'):
         close_program()
-        break
          
     else:
         print('Invalid input.'
