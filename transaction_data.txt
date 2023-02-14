@@ -1,1 +1,18 @@
-brand new file!
+transaction_type,amount
+credit,6789.54
+credit,569.56
+credit,47.56
+debit,-56.78
+debit,-1000.0
+debit,-5.82
+debit,-25.46
+credit,50.0
+debit,-43.56
+credit,42.31
+credit,10.0
+credit,4506.78
+debit,-300.0
+credit,2000.0
+debit,-1000.0
+credit,5000.0
+credit,1.0
